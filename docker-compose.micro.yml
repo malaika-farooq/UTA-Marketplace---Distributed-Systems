@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: uta
+      POSTGRES_PASSWORD: uta
+      POSTGRES_DB: uta_marketplace
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  messaging:
+    build: ./services/messaging
+    environment:
+      GRPC_PORT: "50055"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    depends_on:
+      - postgres
+
+  gateway:
+    build: ./gateway
+    environment:
+      PORT: "8080"
+      MESSAGING_GRPC_ADDR: "messaging:50055"
+      JWT_SECRET: "dev_secret_change_me"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - messaging
+
+volumes:
+  pgdata:
