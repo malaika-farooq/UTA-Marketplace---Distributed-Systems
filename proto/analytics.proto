@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package analytics;
+
+service AnalyticsService {
+  rpc TrackView(TrackViewRequest) returns (TrackViewResponse);
+  rpc GetListingViews(GetListingViewsRequest) returns (GetListingViewsResponse);
+  rpc GetTrendingListings(GetTrendingListingsRequest) returns (GetTrendingListingsResponse);
+  rpc GetRecommendations(GetRecommendationsRequest) returns (GetRecommendationsResponse);
+  rpc GetUserAnalytics(GetUserAnalyticsRequest) returns (GetUserAnalyticsResponse);
+}
+
+message TrackViewRequest {
+  string listing_id = 1;
+  string user_id = 2;  // can be empty for anonymous views
+  int64 timestamp = 3;
+  string referrer = 4;
+}
+
+message TrackViewResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetListingViewsRequest {
+  string listing_id = 1;
+}
+
+message GetListingViewsResponse {
+  bool success = 1;
+  int32 total_views = 2;
+  int32 unique_views = 3;
+  int32 views_today = 4;
+  int32 views_week = 5;
+}
+
+message GetTrendingListingsRequest {
+  int32 limit = 1;
+  string time_window = 2;  // "day", "week", "month"
+}
+
+message TrendingListing {
+  string listing_id = 1;
+  string title = 2;
+  double price = 3;
+  string image_url = 4;
+  int32 view_count = 5;
+  int32 contact_count = 6;
+  double trend_score = 7;
+}
+
+message GetTrendingListingsResponse {
+  bool success = 1;
+  repeated TrendingListing listings = 2;
+}
+
+message GetRecommendationsRequest {
+  string user_id = 1;
+  int32 limit = 2;
+}
+
+message RecommendedListing {
+  string listing_id = 1;
+  string title = 2;
+  double price = 3;
+  string image_url = 4;
+  double recommendation_score = 5;
+  string reason = 6;  // "based on your favorites", "trending in category", etc.
+}
+
+message GetRecommendationsResponse {
+  bool success = 1;
+  repeated RecommendedListing recommendations = 2;
+}
+
+message GetUserAnalyticsRequest {
+  string user_id = 1;
+}
+
+message UserAnalytics {
+  int32 listings_created = 1;
+  int32 active_listings = 2;
+  int32 total_views_received = 3;
+  int32 contacts_received = 4;
+  int32 favorites_count = 5;
+  repeated string most_viewed_categories = 6;
+}
+
+message GetUserAnalyticsResponse {
+  bool success = 1;
+  UserAnalytics analytics = 2;
+}

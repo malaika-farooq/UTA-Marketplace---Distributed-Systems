@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package messaging;
+
+service MessagingService {
+  rpc InitiateContact(InitiateContactRequest) returns (InitiateContactResponse);
+  rpc GetContactInfo(GetContactInfoRequest) returns (GetContactInfoResponse);
+  rpc LogContactAttempt(LogContactAttemptRequest) returns (LogContactAttemptResponse);
+  rpc GetContactHistory(GetContactHistoryRequest) returns (GetContactHistoryResponse);
+}
+
+message InitiateContactRequest {
+  string user_id = 1;
+  string listing_id = 2;
+  string seller_id = 3;
+  string contact_method = 4;  // "whatsapp", "email"
+}
+
+message InitiateContactResponse {
+  bool success = 1;
+  string message = 2;
+  string contact_url = 3;  // wa.me link or mailto link
+  string contact_info = 4;
+}
+
+message GetContactInfoRequest {
+  string seller_id = 1;
+  string listing_id = 2;
+}
+
+message ContactInfo {
+  string seller_id = 1;
+  string email = 2;
+  string whatsapp = 3;
+  bool email_available = 4;
+  bool whatsapp_available = 5;
+}
+
+message GetContactInfoResponse {
+  bool success = 1;
+  string message = 2;
+  ContactInfo contact_info = 3;
+}
+
+message LogContactAttemptRequest {
+  string user_id = 1;
+  string listing_id = 2;
+  string seller_id = 3;
+  string contact_method = 4;
+  int64 timestamp = 5;
+}
+
+message LogContactAttemptResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetContactHistoryRequest {
+  string user_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message ContactAttempt {
+  string listing_id = 1;
+  string listing_title = 2;
+  string seller_id = 3;
+  string contact_method = 4;
+  int64 timestamp = 5;
+}
+
+message GetContactHistoryResponse {
+  bool success = 1;
+  repeated ContactAttempt attempts = 2;
+  int32 total_count = 3;
+}

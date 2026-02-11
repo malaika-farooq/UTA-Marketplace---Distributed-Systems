@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:16
+    container_name: uta-marketplace-db-mono
+    environment:
+      POSTGRES_USER: uta
+      POSTGRES_PASSWORD: uta
+      POSTGRES_DB: uta_marketplace
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_mono:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uta -d uta_marketplace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - marketplace-mono-network
+
+  # Monolithic Application
+  monolithic:
+    build: ./monolithic
+    container_name: uta-marketplace-monolithic
+    environment:
+      PORT: "9000"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+      JWT_SECRET: "dev_secret_change_me_in_production"
+      CORS_ORIGIN: "http://localhost:5173"
+    ports:
+      - "9000:9000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-mono-network
+    restart: unless-stopped
+
+volumes:
+  pgdata_mono:
+
+networks:
+  marketplace-mono-network:
+    driver: bridge

@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:16
+    container_name: uta-marketplace-db
+    environment:
+      POSTGRES_USER: uta
+      POSTGRES_PASSWORD: uta
+      POSTGRES_DB: uta_marketplace
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uta -d uta_marketplace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - marketplace-network
+
+  # Auth Service (gRPC)
+  auth:
+    build:
+      context: .
+      dockerfile: services/auth/Dockerfile
+    container_name: uta-marketplace-auth
+    environment:
+      GRPC_PORT: "50051"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+      JWT_SECRET: "dev_secret_change_me_in_production"
+    ports:
+      - "50051:50051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # Listing Service (gRPC)
+  listing:
+    build:
+      context: .
+      dockerfile: services/listing/Dockerfile
+    container_name: uta-marketplace-listing
+    environment:
+      GRPC_PORT: "50052"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    ports:
+      - "50052:50052"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # Search Service (gRPC)
+  search:
+    build:
+      context: .
+      dockerfile: services/search/Dockerfile
+    container_name: uta-marketplace-search
+    environment:
+      GRPC_PORT: "50053"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    ports:
+      - "50053:50053"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # User Service (gRPC)
+  user:
+    build:
+      context: .
+      dockerfile: services/user/Dockerfile
+    container_name: uta-marketplace-user
+    environment:
+      GRPC_PORT: "50054"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    ports:
+      - "50054:50054"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # Messaging Service (gRPC)
+  messaging:
+    build:
+      context: .
+      dockerfile: services/messaging/Dockerfile
+    container_name: uta-marketplace-messaging
+    environment:
+      GRPC_PORT: "50055"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    ports:
+      - "50055:50055"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # Analytics Service (gRPC)
+  analytics:
+    build:
+      context: .
+      dockerfile: services/analytics/Dockerfile
+    container_name: uta-marketplace-analytics
+    environment:
+      GRPC_PORT: "50056"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    ports:
+      - "50056:50056"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # API Gateway (REST)
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: uta-marketplace-gateway
+    environment:
+      PORT: "8080"
+      CORS_ORIGIN: "http://localhost:5173"
+      AUTH_GRPC_ADDR: "auth:50051"
+      LISTING_GRPC_ADDR: "listing:50052"
+      SEARCH_GRPC_ADDR: "search:50053"
+      USER_GRPC_ADDR: "user:50054"
+      MESSAGING_GRPC_ADDR: "messaging:50055"
+      ANALYTICS_GRPC_ADDR: "analytics:50056"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth
+      - listing
+      - search
+      - user
+      - messaging
+      - analytics
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  marketplace-network:
+    driver: bridge

@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse);
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserProfileResponse);
+  rpc AddFavorite(AddFavoriteRequest) returns (AddFavoriteResponse);
+  rpc RemoveFavorite(RemoveFavoriteRequest) returns (RemoveFavoriteResponse);
+  rpc GetFavorites(GetFavoritesRequest) returns (GetFavoritesResponse);
+  rpc IsFavorite(IsFavoriteRequest) returns (IsFavoriteResponse);
+}
+
+message UserProfile {
+  string user_id = 1;
+  string email = 2;
+  string full_name = 3;
+  string phone = 4;
+  string whatsapp = 5;
+  string avatar_url = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+}
+
+message GetUserProfileRequest {
+  string user_id = 1;
+}
+
+message GetUserProfileResponse {
+  bool success = 1;
+  string message = 2;
+  UserProfile profile = 3;
+}
+
+message UpdateUserProfileRequest {
+  string user_id = 1;
+  optional string full_name = 2;
+  optional string phone = 3;
+  optional string whatsapp = 4;
+  optional string avatar_url = 5;
+}
+
+message UpdateUserProfileResponse {
+  bool success = 1;
+  string message = 2;
+  UserProfile profile = 3;
+}
+
+message AddFavoriteRequest {
+  string user_id = 1;
+  string listing_id = 2;
+}
+
+message AddFavoriteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RemoveFavoriteRequest {
+  string user_id = 1;
+  string listing_id = 2;
+}
+
+message RemoveFavoriteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetFavoritesRequest {
+  string user_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message FavoriteListing {
+  string listing_id = 1;
+  string title = 2;
+  double price = 3;
+  string image_url = 4;
+  int64 favorited_at = 5;
+}
+
+message GetFavoritesResponse {
+  bool success = 1;
+  repeated FavoriteListing favorites = 2;
+  int32 total_count = 3;
+}
+
+message IsFavoriteRequest {
+  string user_id = 1;
+  string listing_id = 2;
+}
+
+message IsFavoriteResponse {
+  bool is_favorite = 1;
+}

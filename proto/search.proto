@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package search;
+
+service SearchService {
+  rpc SearchListings(SearchRequest) returns (SearchResponse);
+  rpc GetCategories(GetCategoriesRequest) returns (GetCategoriesResponse);
+  rpc GetConditions(GetConditionsRequest) returns (GetConditionsResponse);
+  rpc GetMeetSpots(GetMeetSpotsRequest) returns (GetMeetSpotsResponse);
+}
+
+message SearchRequest {
+  optional string query = 1;
+  optional string category_id = 2;
+  optional string condition_id = 3;
+  optional double min_price = 4;
+  optional double max_price = 5;
+  optional string meet_spot_id = 6;
+  string sort_by = 7;  // "price_asc", "price_desc", "date_desc", "date_asc"
+  int32 limit = 8;
+  int32 offset = 9;
+}
+
+message ListingResult {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  double price = 4;
+  string category_id = 5;
+  string condition_id = 6;
+  string seller_id = 7;
+  string image_url = 8;
+  string meet_spot_id = 9;
+  int64 created_at = 10;
+  double relevance_score = 11;
+}
+
+message SearchResponse {
+  bool success = 1;
+  repeated ListingResult results = 2;
+  int32 total_count = 3;
+  string message = 4;
+}
+
+message GetCategoriesRequest {}
+
+message Category {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message GetCategoriesResponse {
+  bool success = 1;
+  repeated Category categories = 2;
+}
+
+message GetConditionsRequest {}
+
+message Condition {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message GetConditionsResponse {
+  bool success = 1;
+  repeated Condition conditions = 2;
+}
+
+message GetMeetSpotsRequest {}
+
+message MeetSpot {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message GetMeetSpotsResponse {
+  bool success = 1;
+  repeated MeetSpot meet_spots = 2;
+}
