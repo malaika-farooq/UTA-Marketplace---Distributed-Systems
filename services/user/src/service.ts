@@ -1,5 +1,4 @@
 import * as grpc from '@grpc/grpc-js';
-import { v4 as uuidv4 } from 'uuid';
 import pkg from 'pg';
 const { Pool } = pkg;
 
@@ -188,8 +187,8 @@ export const UserServiceHandlers = {
 
       // Add to favorites
       await pool.query(
-        'INSERT INTO favorites (id, user_id, listing_id) VALUES ($1, $2, $3)',
-        [uuidv4(), user_id, listing_id]
+        'INSERT INTO favorites (user_id, listing_id) VALUES ($1, $2)',
+        [user_id, listing_id]
       );
 
       callback(null, {
@@ -241,11 +240,11 @@ export const UserServiceHandlers = {
       // Get favorites with listing details
       const result = await pool.query(
         `SELECT f.listing_id, l.title, l.price, l.image_url,
-                EXTRACT(EPOCH FROM f.created_at)::bigint as favorited_at
+                EXTRACT(EPOCH FROM f.favorited_at)::bigint as favorited_at
          FROM favorites f
          JOIN listings l ON f.listing_id = l.id
          WHERE f.user_id = $1
-         ORDER BY f.created_at DESC
+         ORDER BY f.favorited_at DESC
          LIMIT $2 OFFSET $3`,
         [user_id, limit || 20, offset || 0]
       );

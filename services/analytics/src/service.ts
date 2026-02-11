@@ -13,7 +13,7 @@ export const AnalyticsServiceHandlers = {
 
     try {
       await pool.query(
-        `INSERT INTO listing_views (id, listing_id, user_id, referrer, created_at)
+        `INSERT INTO listing_views (id, listing_id, user_id, referrer, timestamp)
          VALUES ($1, $2, $3, $4, to_timestamp($5))`,
         [
           uuidv4(),
@@ -58,7 +58,7 @@ export const AnalyticsServiceHandlers = {
       // Views today
       const todayResult = await pool.query(
         `SELECT COUNT(*) as count FROM listing_views
-         WHERE listing_id = $1 AND created_at >= CURRENT_DATE`,
+         WHERE listing_id = $1 AND timestamp >= CURRENT_DATE`,
         [listing_id]
       );
       const views_today = parseInt(todayResult.rows[0].count);
@@ -66,7 +66,7 @@ export const AnalyticsServiceHandlers = {
       // Views this week
       const weekResult = await pool.query(
         `SELECT COUNT(*) as count FROM listing_views
-         WHERE listing_id = $1 AND created_at >= CURRENT_DATE - INTERVAL '7 days'`,
+         WHERE listing_id = $1 AND timestamp >= CURRENT_DATE - INTERVAL '7 days'`,
         [listing_id]
       );
       const views_week = parseInt(weekResult.rows[0].count);
@@ -94,16 +94,16 @@ export const AnalyticsServiceHandlers = {
       let timeCondition = '';
       switch (time_window) {
         case 'day':
-          timeCondition = "AND lv.created_at >= CURRENT_DATE";
+          timeCondition = "AND lv.timestamp >= CURRENT_DATE";
           break;
         case 'week':
-          timeCondition = "AND lv.created_at >= CURRENT_DATE - INTERVAL '7 days'";
+          timeCondition = "AND lv.timestamp >= CURRENT_DATE - INTERVAL '7 days'";
           break;
         case 'month':
-          timeCondition = "AND lv.created_at >= CURRENT_DATE - INTERVAL '30 days'";
+          timeCondition = "AND lv.timestamp >= CURRENT_DATE - INTERVAL '30 days'";
           break;
         default:
-          timeCondition = "AND lv.created_at >= CURRENT_DATE - INTERVAL '7 days'";
+          timeCondition = "AND lv.timestamp >= CURRENT_DATE - INTERVAL '7 days'";
       }
 
       const query = `
@@ -114,7 +114,7 @@ export const AnalyticsServiceHandlers = {
         FROM listings l
         LEFT JOIN listing_views lv ON l.id = lv.listing_id ${timeCondition}
         LEFT JOIN contact_attempts ca ON l.id = ca.listing_id ${timeCondition.replace('lv.', 'ca.')}
-        WHERE l.status = 'active'
+        WHERE l.is_active = true
         GROUP BY l.id, l.title, l.price, l.image_url
         HAVING COUNT(lv.id) > 0
         ORDER BY trend_score DESC
@@ -174,14 +174,14 @@ export const AnalyticsServiceHandlers = {
           LEFT JOIN (
             SELECT listing_id, COUNT(*) as view_count
             FROM listing_views
-            WHERE created_at >= CURRENT_DATE - INTERVAL '7 days'
+            WHERE timestamp >= CURRENT_DATE - INTERVAL '7 days'
             GROUP BY listing_id
           ) view_counts ON l.id = view_counts.listing_id
           WHERE l.category_id = ANY($1)
-            AND l.status = 'active'
+            AND l.is_active = true
             AND l.seller_id != $2
             AND l.id NOT IN (SELECT listing_id FROM favorites WHERE user_id = $2)
-          ORDER BY popularity_score DESC, l.created_at DESC
+          ORDER BY popularity_score DESC, l.timestamp DESC
           LIMIT $3
         `;
         const result = await pool.query(recommendQuery, [favCategories, user_id, limit || 10]);
@@ -203,13 +203,13 @@ export const AnalyticsServiceHandlers = {
                  COUNT(lv.id) as view_count
           FROM listings l
           LEFT JOIN listing_views lv ON l.id = lv.listing_id
-            AND lv.created_at >= CURRENT_DATE - INTERVAL '7 days'
-          WHERE l.status = 'active'
+            AND lv.timestamp >= CURRENT_DATE - INTERVAL '7 days'
+          WHERE l.is_active = true
             AND l.seller_id != $1
             AND l.id NOT IN (SELECT listing_id FROM favorites WHERE user_id = $1)
             ${recommendations.length > 0 ? 'AND l.id NOT IN (' + recommendations.map(r => `'${r.listing_id}'`).join(',') + ')' : ''}
           GROUP BY l.id, l.title, l.price, l.image_url
-          ORDER BY view_count DESC, l.created_at DESC
+          ORDER BY view_count DESC, l.timestamp DESC
           LIMIT $2
         `;
         const trendingResult = await pool.query(trendingQuery, [user_id, (limit || 10) - recommendations.length]);
@@ -252,7 +252,7 @@ export const AnalyticsServiceHandlers = {
 
       // Active listings
       const activeListingsResult = await pool.query(
-        "SELECT COUNT(*) as count FROM listings WHERE seller_id = $1 AND status = 'active'",
+        "SELECT COUNT(*) as count FROM listings WHERE seller_id = $1 AND is_active = true",
         [user_id]
       );
       const active_listings = parseInt(activeListingsResult.rows[0].count);

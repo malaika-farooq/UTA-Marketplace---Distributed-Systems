@@ -1,73 +1,98 @@
-# React + TypeScript + Vite
+# UTA Marketplace Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple, clean frontend for the UTA Marketplace distributed systems project.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Architecture Toggle**: Switch between Microservices (port 8080) and Monolithic (port 9000) backends
+- **User Authentication**: Login with JWT token-based authentication
+- **Search & Browse**: Search listings by keyword and filter by category
+- **User Profile**: View your profile information
+- **Favorites**: Save and manage favorite listings
+- **Responsive Design**: Works on desktop and mobile devices
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Start the Backend
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Microservices** (recommended):
+```bash
+cd ..
+docker compose -f docker-compose.microservices.yml up -d
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Monolithic** (optional, for comparison):
+```bash
+cd ..
+docker compose -f docker-compose.monolithic.yml up -d
 ```
+
+### 2. Start the Frontend Server
+
+From the project root:
+```bash
+./start-frontend.sh
+```
+
+Or manually:
+```bash
+cd frontend
+node serve.js
+```
+
+### 3. Open in Browser
+
+Navigate to: **http://localhost:3000**
+
+## Default Users
+
+The following test users are available:
+
+- **Email**: alice@uta.edu | **Password**: password123
+- **Email**: bob@uta.edu | **Password**: password123
+- **Email**: carol@uta.edu | **Password**: password123
+
+## Architecture Comparison
+
+The frontend allows you to easily compare the two backend architectures:
+
+1. **Microservices Architecture** (Port 8080)
+   - 8 separate containers (6 gRPC services + API Gateway + PostgreSQL)
+   - Services: Auth, Listing, Search, User, Messaging, Analytics
+   - Better scalability and fault isolation
+
+2. **Monolithic Architecture** (Port 9000)
+   - 2 containers (Monolithic app + PostgreSQL)
+   - All services in one codebase
+   - Simpler deployment and development
+
+**To switch**: Use the radio buttons in the header
+
+## File Structure
+
+```
+frontend/
+├── index.html      # Main HTML page
+├── styles.css      # All styling
+├── app.js          # Frontend logic and API calls
+├── serve.js        # Simple HTTP server
+└── README.md       # This file
+```
+
+## Troubleshooting
+
+### Frontend won't load
+- Make sure you're running the server: `./start-frontend.sh`
+- Check that port 3000 isn't already in use
+
+### Can't connect to backend
+- Ensure Docker containers are running: `docker ps`
+- Check backend health: `curl http://localhost:8080/health`
+
+### Login fails
+- Verify password hash was updated in database
+- Check backend logs: `docker logs uta-marketplace-auth`
+
+## License
+
+Part of the UTA Marketplace distributed systems project.

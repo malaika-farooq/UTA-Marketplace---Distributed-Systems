@@ -140,7 +140,7 @@ services:
     container_name: uta-marketplace-gateway
     environment:
       PORT: "8080"
-      CORS_ORIGIN: "http://localhost:5173"
+      CORS_ORIGIN: "http://localhost:3000"
       AUTH_GRPC_ADDR: "auth:50051"
       LISTING_GRPC_ADDR: "listing:50052"
       SEARCH_GRPC_ADDR: "search:50053"
@@ -156,6 +156,20 @@ services:
       - user
       - messaging
       - analytics
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
+  # Frontend (Web UI)
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: uta-marketplace-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
     networks:
       - marketplace-network
     restart: unless-stopped

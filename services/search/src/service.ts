@@ -11,7 +11,7 @@ export const SearchServiceHandlers = {
     const { query, category_id, condition_id, min_price, max_price, meet_spot_id, sort_by, limit, offset } = call.request;
 
     try {
-      let whereConditions = ["status = 'active'"];
+      let whereConditions = ["is_active = true"];
       let params: any[] = [];
       let paramCount = 1;
 
