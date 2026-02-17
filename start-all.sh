@@ -1,0 +1,42 @@
+#!/bin/bash
+
+echo "=========================================="
+echo "UTA Marketplace - Complete Startup"
+echo "=========================================="
+echo ""
+
+echo "Starting Microservices Architecture..."
+echo "--------------------------------------"
+docker compose -f docker-compose.microservices.yml up -d
+
+echo ""
+echo "Waiting for services to be ready..."
+sleep 5
+
+echo ""
+echo "=========================================="
+echo "✓ All Services Started!"
+echo "=========================================="
+echo ""
+echo "🌐 Frontend:        http://localhost:3000"
+echo "🚀 Microservices:   http://localhost:8080"
+echo "📊 Monolithic:      http://localhost:9000 (optional)"
+echo ""
+echo "Architecture:"
+echo "  • API Gateway:    localhost:8080"
+echo "  • Auth Service:   localhost:50051 (gRPC)"
+echo "  • Listing Service: localhost:50052 (gRPC)"
+echo "  • Search Service:  localhost:50053 (gRPC)"
+echo "  • User Service:    localhost:50054 (gRPC)"
+echo "  • Messaging:       localhost:50055 (gRPC)"
+echo "  • Analytics:       localhost:50056 (gRPC)"
+echo "  • PostgreSQL:      localhost:5432"
+echo "  • Frontend:        localhost:3000"
+echo ""
+echo "Default Login:"
+echo "  Email:    alice@uta.edu"
+echo "  Password: password123"
+echo ""
+echo "To view logs: docker compose -f docker-compose.microservices.yml logs -f"
+echo "To stop all:  docker compose -f docker-compose.microservices.yml down"
+echo ""
