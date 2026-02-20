@@ -1,15 +1,23 @@
+# ---------- BUILD ----------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY frontend/package*.json ./
+RUN npm install
+
+COPY frontend ./
+RUN npm run build
+
+# ---------- PRODUCTION ----------
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy frontend files
-COPY frontend/index.html .
-COPY frontend/styles.css .
-COPY frontend/app.js .
-COPY frontend/serve.js .
+RUN npm install -g serve
 
-# Expose port
+COPY --from=builder /app/dist ./dist
+
 EXPOSE 3000
 
-# Start the server
-CMD ["node", "serve.js"]
+CMD ["serve", "-s", "dist", "-l", "3000"]

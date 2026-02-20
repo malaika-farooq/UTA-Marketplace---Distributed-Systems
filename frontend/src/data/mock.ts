@@ -1,5 +1,5 @@
 // src/data/mock.ts
-import { CATEGORIES, CONDITIONS, FEATURE_TAGS, MEET_SPOTS } from "../config/marketpkace";
+import { CATEGORIES, CONDITIONS, FEATURE_TAGS, MEET_SPOTS } from "../config/marketplace";
 
 export type Listing = {
   id: string;

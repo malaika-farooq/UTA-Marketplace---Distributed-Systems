@@ -38,13 +38,7 @@ Layout wrapper pattern:
 </Route>
 ```
 
-✅ Remove these if present:
-- `/chat/:conversationId`
-- `/chats`
 
-Because chat is no longer in scope.
-
----
 
 ### 1.2 `components/Layout.tsx` (App Shell)
 

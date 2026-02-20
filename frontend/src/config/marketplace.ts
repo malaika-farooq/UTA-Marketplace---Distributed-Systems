@@ -70,7 +70,7 @@ export const LISTINGS_PAGE = {
 export const CAMPUS_TIPS = [
   { id: "meet", text: "Meet at library / UC / engineering lobby." },
   { id: "verify", text: "Verify condition before payment." },
-  { id: "chat", text: "Keep chats inside the app." },
+  { id: "chat", text: "Keep chats per rules of the app." },
 ];
 
 export const DIS = {
@@ -87,6 +87,6 @@ export const DIS = {
 
 export const NAV_ITEMS = [
   { id: "listings", label: "Listings", href: "/listings", match: "exact" as const },
-  { id: "chats", label: "Chats", href: "/chats", match: "prefix" as const },
+  { id: "Sellers", label: "Sellers", href: "/sellers", match: "prefix" as const },
   { id: "profile", label: "Profile", href: "/profile", match: "exact" as const },
 ];
