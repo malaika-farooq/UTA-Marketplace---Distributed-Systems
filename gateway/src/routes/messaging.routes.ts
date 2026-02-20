@@ -4,7 +4,6 @@ import { requireAuth, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 
-// Initiate contact with seller
 router.post('/initiate', requireAuth, (req: AuthRequest, res) => {
   const { listing_id, seller_id, contact_method } = req.body;
 
@@ -20,6 +19,20 @@ router.post('/initiate', requireAuth, (req: AuthRequest, res) => {
         console.error('InitiateContact error:', err);
         return res.status(500).json({ error: 'Failed to initiate contact' });
       }
+
+      // 🔥 LOG CONTACT ATTEMPT
+      messagingClient.LogContactAttempt(
+        {
+          user_id: req.userId,
+          listing_id,
+          seller_id,
+          contact_method,
+          timestamp: Date.now(),
+        },
+        () => {
+          // we don’t block response if logging fails
+        }
+      );
 
       res.json({
         success: response.success,

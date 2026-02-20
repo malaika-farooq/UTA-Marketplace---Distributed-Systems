@@ -208,13 +208,25 @@ export default function Listings() {
                 <div className="flex gap-2">
                   <Button
                     onClick={async () => {
-                      const resp = await initiateContact(
-                        token!,
-                        l.id,
-                        l.sellerId,
-                        "whatsapp"
-                      );
-                      if (resp.contact_url) window.open(resp.contact_url, "_blank");
+                      try {
+                        const resp = await initiateContact(
+                          token!,
+                          l.id,
+                          l.sellerId,
+                          "whatsapp"
+                        );
+
+                        console.log("CONTACT RESPONSE:", resp);
+
+                        if (resp.contact_url) {
+                          window.open(resp.contact_url, "_blank");
+                        } else {
+                          alert("No contact URL returned");
+                        }
+                      } catch (e: any) {
+                        console.error(e);
+                        alert(e.message || "Contact failed");
+                      }
                     }}
                   >
                     WhatsApp
