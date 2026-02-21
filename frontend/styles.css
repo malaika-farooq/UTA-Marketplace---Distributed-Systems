@@ -128,6 +128,16 @@ h1 {
     background: #4a5568;
 }
 
+.btn-favorited {
+    background: #48bb78;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-favorited:hover {
+    background: #38a169;
+}
+
 .helper-text {
     margin-top: 10px;
     color: #718096;
@@ -253,18 +263,319 @@ h1 {
     color: #718096;
 }
 
+/* =============================================
+   Tab Navigation
+   ============================================= */
+.tab-nav {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    background: white;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: #718096;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    background: #f7fafc;
+    color: #667eea;
+}
+
+.tab-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* =============================================
+   Listing Action Buttons
+   ============================================= */
+.listing-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-danger {
+    background: #e53e3e;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c53030;
+}
+
+/* =============================================
+   Modal
+   ============================================= */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #718096;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #e53e3e;
+}
+
+.modal-details {
+    margin-top: 10px;
+}
+
+.modal-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.modal-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    color: #4a5568;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.modal-details hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 15px 0;
+}
+
+.modal-details h3 {
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+/* =============================================
+   Data Table (Contact History)
+   ============================================= */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.data-table th {
+    background: #f7fafc;
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.data-table td {
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.data-table tr:hover {
+    background: #f7fafc;
+}
+
+/* =============================================
+   Stats Grid (Analytics)
+   ============================================= */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* =============================================
+   Trending & Recommendations
+   ============================================= */
+.trending-card {
+    position: relative;
+}
+
+.trending-rank {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #667eea;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.trend-score {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.recommendation-card {
+    border-left: 4px solid #667eea;
+}
+
+.recommendation-reason {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #667eea;
+    font-style: italic;
+}
+
+/* =============================================
+   Category Tags
+   ============================================= */
+.category-tag {
+    display: inline-block;
+    background: #edf2f7;
+    color: #4a5568;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin: 4px;
+}
+
+/* =============================================
+   Profile
+   ============================================= */
+.profile-field {
+    margin-bottom: 8px;
+    color: #4a5568;
+}
+
+.profile-field strong {
+    color: #2d3748;
+}
+
+#editProfileForm {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+#editProfileBtn {
+    margin-top: 15px;
+}
+
+/* =============================================
+   Responsive Design
+   ============================================= */
 @media (max-width: 768px) {
     .header-content {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .search-controls {
         flex-direction: column;
     }
-    
+
     .search-input,
     .filter-select {
         width: 100%;
+    }
+
+    .tab-nav {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1 1 45%;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

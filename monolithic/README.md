@@ -4,7 +4,7 @@ This is the monolithic version of the UTA Marketplace application, created for p
 
 ## Overview
 
-The monolithic application combines ALL functionality from the 6 microservices into a single Express.js application:
+The monolithic application combines ALL functionality from the 7 microservices into a single Express.js application:
 
 - **Auth Service** → `/api/auth` routes
 - **Listing Service** → `/api/listings` routes

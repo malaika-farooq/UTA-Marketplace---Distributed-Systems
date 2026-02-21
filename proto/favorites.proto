@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package favorites;
+
+service FavoritesService {
+  rpc AddFavorite(AddFavoriteRequest) returns (AddFavoriteResponse);
+  rpc RemoveFavorite(RemoveFavoriteRequest) returns (RemoveFavoriteResponse);
+  rpc GetFavorites(GetFavoritesRequest) returns (GetFavoritesResponse);
+  rpc IsFavorite(IsFavoriteRequest) returns (IsFavoriteResponse);
+}
+
+message AddFavoriteRequest {
+  string user_id = 1;
+  string listing_id = 2;
+}
+
+message AddFavoriteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RemoveFavoriteRequest {
+  string user_id = 1;
+  string listing_id = 2;
+}
+
+message RemoveFavoriteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetFavoritesRequest {
+  string user_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message FavoriteListing {
+  string listing_id = 1;
+  string title = 2;
+  double price = 3;
+  string image_url = 4;
+  int64 favorited_at = 5;
+}
+
+message GetFavoritesResponse {
+  bool success = 1;
+  repeated FavoriteListing favorites = 2;
+  int32 total_count = 3;
+}
+
+message IsFavoriteRequest {
+  string user_id = 1;
+  string listing_id = 2;
+}
+
+message IsFavoriteResponse {
+  bool is_favorite = 1;
+}

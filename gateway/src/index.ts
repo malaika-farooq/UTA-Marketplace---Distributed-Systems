@@ -9,6 +9,7 @@ import searchRoutes from './routes/search.routes.js';
 import userRoutes from './routes/user.routes.js';
 import messagingRoutes from './routes/messaging.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
+import favoritesRoutes from './routes/favorites.routes.js';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/messaging', messagingRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/favorites', favoritesRoutes);
 
 // Error handling
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

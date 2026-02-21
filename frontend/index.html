@@ -48,30 +48,121 @@
 
         <!-- Main Content -->
         <div id="mainContent" style="display: none;">
-            <!-- Search Section -->
-            <section class="card">
-                <h2>🔍 Search Listings</h2>
-                <div class="search-controls">
-                    <input type="text" id="searchQuery" placeholder="Search for items..." class="search-input">
-                    <select id="categoryFilter" class="filter-select">
-                        <option value="">All Categories</option>
-                    </select>
-                    <button onclick="searchListings()" class="btn btn-primary">Search</button>
-                </div>
-                <div id="searchResults" class="listings-grid"></div>
-            </section>
+            <!-- Tab Navigation -->
+            <nav class="tab-nav">
+                <button class="tab-btn active" onclick="switchTab('search', event)">🔍 Search</button>
+                <button class="tab-btn" onclick="switchTab('user', event)">👤 User</button>
+                <button class="tab-btn" onclick="switchTab('messaging', event)">💬 Messaging</button>
+                <button class="tab-btn" onclick="switchTab('analytics', event)">📊 Analytics</button>
+            </nav>
 
-            <!-- User Profile -->
-            <section class="card">
-                <h2>👤 My Profile</h2>
-                <div id="profileInfo"></div>
-            </section>
+            <!-- ==================== SEARCH TAB ==================== -->
+            <div id="tab-search" class="tab-content active">
+                <section class="card">
+                    <h2>🔍 Search Listings</h2>
+                    <div class="search-controls">
+                        <input type="text" id="searchQuery" placeholder="Search for items..." class="search-input">
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="">All Categories</option>
+                        </select>
+                        <button onclick="searchListings()" class="btn btn-primary">Search</button>
+                    </div>
+                    <div id="searchResults" class="listings-grid"></div>
+                </section>
+            </div>
 
-            <!-- Favorites -->
-            <section class="card">
-                <h2>⭐ My Favorites</h2>
-                <div id="favoritesContent" class="listings-grid"></div>
-            </section>
+            <!-- ==================== USER TAB ==================== -->
+            <div id="tab-user" class="tab-content">
+                <!-- User Profile -->
+                <section class="card">
+                    <h2>👤 My Profile</h2>
+                    <div id="profileInfo"></div>
+                    <button class="btn btn-secondary" onclick="toggleEditProfile()" id="editProfileBtn">Edit Profile</button>
+                    <div id="editProfileForm" style="display: none;">
+                        <form onsubmit="updateProfile(event)">
+                            <div class="form-group">
+                                <label>Full Name:</label>
+                                <input type="text" id="editFullName">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone:</label>
+                                <input type="text" id="editPhone">
+                            </div>
+                            <div class="form-group">
+                                <label>WhatsApp:</label>
+                                <input type="text" id="editWhatsApp">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" onclick="toggleEditProfile()">Cancel</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Favorites -->
+                <section class="card">
+                    <h2>⭐ My Favorites</h2>
+                    <div id="favoritesContent" class="listings-grid"></div>
+                </section>
+            </div>
+
+            <!-- ==================== MESSAGING TAB ==================== -->
+            <div id="tab-messaging" class="tab-content">
+                <!-- Contact a Seller -->
+                <section class="card">
+                    <h2>💬 Contact a Seller</h2>
+                    <p class="helper-text">Click on any listing from the Search tab to contact the seller.</p>
+                </section>
+
+                <!-- Contact History -->
+                <section class="card">
+                    <h2>📋 My Contact History</h2>
+                    <button onclick="loadContactHistory()" class="btn btn-primary" style="margin-bottom: 15px;">Refresh History</button>
+                    <div id="contactHistory">
+                        <p class="loading">Click "Refresh History" to load your contact history.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ==================== ANALYTICS TAB ==================== -->
+            <div id="tab-analytics" class="tab-content">
+                <!-- User Stats -->
+                <section class="card">
+                    <h2>📊 My Stats</h2>
+                    <button onclick="loadUserStats()" class="btn btn-primary" style="margin-bottom: 15px;">Refresh Stats</button>
+                    <div id="userStats">
+                        <p class="loading">Click "Refresh Stats" to load your analytics.</p>
+                    </div>
+                </section>
+
+                <!-- Trending Listings -->
+                <section class="card">
+                    <h2>🔥 Trending Listings</h2>
+                    <div class="search-controls">
+                        <select id="trendingTimeWindow" class="filter-select">
+                            <option value="day">Today</option>
+                            <option value="week" selected>This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                        <button onclick="loadTrending()" class="btn btn-primary">Load Trending</button>
+                    </div>
+                    <div id="trendingResults" class="listings-grid"></div>
+                </section>
+
+                <!-- Recommendations -->
+                <section class="card">
+                    <h2>💡 Recommendations</h2>
+                    <button onclick="loadRecommendations()" class="btn btn-primary" style="margin-bottom: 15px;">Get Recommendations</button>
+                    <div id="recommendationsResults" class="listings-grid"></div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Listing Detail Modal -->
+        <div id="listingModal" class="modal" style="display: none;">
+            <div class="modal-content card">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div id="modalBody"></div>
+            </div>
         </div>
     </div>
 

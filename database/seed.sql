@@ -35,17 +35,18 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO users (id, email, password_hash, full_name, phone, whatsapp) VALUES
     ('550e8400-e29b-41d4-a716-446655440001', 'alice@uta.edu', '$2b$10$xJ2JQGt6UqtSOKcUC2NeLOfPJikxnXb2dNeaoov70xfIQIB6mvdOS', 'Alice Johnson', '8175551001', '18175551001'),
     ('550e8400-e29b-41d4-a716-446655440002', 'bob@uta.edu', '$2b$10$xJ2JQGt6UqtSOKcUC2NeLOfPJikxnXb2dNeaoov70xfIQIB6mvdOS', 'Bob Smith', '8175551002', '18175551002'),
-    ('550e8400-e29b-41d4-a716-446655440003', 'carol@uta.edu', '$2b$10$xJ2JQGt6UqtSOKcUC2NeLOfPJikxnXb2dNeaoov70xfIQIB6mvdOS', 'Carol Williams', '8175551003', '18175551003')
+    ('550e8400-e29b-41d4-a716-446655440003', 'carol@uta.edu', '$2b$10$xJ2JQGt6UqtSOKcUC2NeLOfPJikxnXb2dNeaoov70xfIQIB6mvdOS', 'Carol Williams', '8175551003', '18175551003'),
+    ('550e8400-e29b-41d4-a716-446655440004', 'yuanbin.man@uta.edu', '$2b$10$xJ2JQGt6UqtSOKcUC2NeLOfPJikxnXb2dNeaoov70xfIQIB6mvdOS', 'Yuanbin Man', '8175551004', '18175551004')
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert sample listings
 INSERT INTO listings (id, title, description, price, category_id, condition_id, seller_id, seller_email, seller_whatsapp, image_url, meet_spot_id) VALUES
-    ('660e8400-e29b-41d4-a716-446655440001', 'MacBook Pro 13" M1', 'Barely used MacBook Pro with M1 chip, 8GB RAM, 256GB SSD. Excellent condition!', 650.00, 'electronics', 'like_new', '550e8400-e29b-41d4-a716-446655440001', 'alice@uta.edu', '18175551001', 'https://picsum.photos/300/200?random=1', 'library'),
-    ('660e8400-e29b-41d4-a716-446655440002', 'Calculus Textbook (9th Ed)', 'Calculus Early Transcendentals by Stewart. Clean pages, no markings.', 45.00, 'textbooks', 'good', '550e8400-e29b-41d4-a716-446655440002', 'bob@uta.edu', '18175551002', 'https://picsum.photos/300/200?random=2', 'library'),
-    ('660e8400-e29b-41d4-a716-446655440003', 'Study Desk', 'Solid wood desk, perfect for dorm or apartment. Minor scratches.', 80.00, 'furniture', 'good', '550e8400-e29b-41d4-a716-446655440003', 'carol@uta.edu', '18175551003', 'https://picsum.photos/300/200?random=3', 'uc'),
-    ('660e8400-e29b-41d4-a716-446655440004', 'iPhone 13 Pro', 'iPhone 13 Pro 256GB, Space Gray. Battery health 95%.', 520.00, 'electronics', 'like_new', '550e8400-e29b-41d4-a716-446655440001', 'alice@uta.edu', '18175551001', 'https://picsum.photos/300/200?random=4', 'starbucks'),
-    ('660e8400-e29b-41d4-a716-446655440005', 'Engineering Mechanics Textbook', 'Statics and Dynamics 14th Edition. Some highlighting.', 60.00, 'textbooks', 'fair', '550e8400-e29b-41d4-a716-446655440002', 'bob@uta.edu', '18175551002', 'https://picsum.photos/300/200?random=5', 'erc'),
-    ('660e8400-e29b-41d4-a716-446655440006', 'Basketball', 'Official size basketball, lightly used.', 15.00, 'sports', 'good', '550e8400-e29b-41d4-a716-446655440003', 'carol@uta.edu', '18175551003', 'https://picsum.photos/300/200?random=6', 'mac')
+    ('660e8400-e29b-41d4-a716-446655440001', 'MacBook Pro 13" M1', 'Barely used MacBook Pro with M1 chip, 8GB RAM, 256GB SSD. Excellent condition!', 650.00, 'electronics', 'like_new', '550e8400-e29b-41d4-a716-446655440001', 'alice@uta.edu', '18175551001', 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop', 'library'),
+    ('660e8400-e29b-41d4-a716-446655440002', 'Calculus Textbook (9th Ed)', 'Calculus Early Transcendentals by Stewart. Clean pages, no markings.', 45.00, 'textbooks', 'good', '550e8400-e29b-41d4-a716-446655440002', 'bob@uta.edu', '18175551002', 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop', 'library'),
+    ('660e8400-e29b-41d4-a716-446655440003', 'Study Desk', 'Solid wood desk, perfect for dorm or apartment. Minor scratches.', 80.00, 'furniture', 'good', '550e8400-e29b-41d4-a716-446655440003', 'carol@uta.edu', '18175551003', 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&h=300&fit=crop', 'uc'),
+    ('660e8400-e29b-41d4-a716-446655440004', 'iPhone 13 Pro', 'iPhone 13 Pro 256GB, Space Gray. Battery health 95%.', 520.00, 'electronics', 'like_new', '550e8400-e29b-41d4-a716-446655440001', 'alice@uta.edu', '18175551001', 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=300&fit=crop', 'starbucks'),
+    ('660e8400-e29b-41d4-a716-446655440005', 'Engineering Mechanics Textbook', 'Statics and Dynamics 14th Edition. Some highlighting.', 60.00, 'textbooks', 'fair', '550e8400-e29b-41d4-a716-446655440002', 'bob@uta.edu', '18175551002', 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&h=300&fit=crop', 'erc'),
+    ('660e8400-e29b-41d4-a716-446655440006', 'Basketball', 'Official size basketball, lightly used.', 15.00, 'sports', 'good', '550e8400-e29b-41d4-a716-446655440003', 'carol@uta.edu', '18175551003', 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=300&fit=crop', 'mac')
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert sample favorites

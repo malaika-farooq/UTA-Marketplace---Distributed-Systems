@@ -181,7 +181,7 @@ export const AnalyticsServiceHandlers = {
             AND l.is_active = true
             AND l.seller_id != $2
             AND l.id NOT IN (SELECT listing_id FROM favorites WHERE user_id = $2)
-          ORDER BY popularity_score DESC, l.timestamp DESC
+          ORDER BY popularity_score DESC, l.created_at DESC
           LIMIT $3
         `;
         const result = await pool.query(recommendQuery, [favCategories, user_id, limit || 10]);
@@ -209,7 +209,7 @@ export const AnalyticsServiceHandlers = {
             AND l.id NOT IN (SELECT listing_id FROM favorites WHERE user_id = $1)
             ${recommendations.length > 0 ? 'AND l.id NOT IN (' + recommendations.map(r => `'${r.listing_id}'`).join(',') + ')' : ''}
           GROUP BY l.id, l.title, l.price, l.image_url
-          ORDER BY view_count DESC, l.timestamp DESC
+          ORDER BY view_count DESC, l.created_at DESC
           LIMIT $2
         `;
         const trendingResult = await pool.query(trendingQuery, [user_id, (limit || 10) - recommendations.length]);

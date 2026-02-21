@@ -57,8 +57,8 @@ The following test users are available:
 The frontend allows you to easily compare the two backend architectures:
 
 1. **Microservices Architecture** (Port 8080)
-   - 8 separate containers (6 gRPC services + API Gateway + PostgreSQL)
-   - Services: Auth, Listing, Search, User, Messaging, Analytics
+   - 9 separate containers (7 gRPC services + API Gateway + PostgreSQL)
+   - Services: Auth, Listing, Search, User, Messaging, Analytics, Favorites
    - Better scalability and fault isolation
 
 2. **Monolithic Architecture** (Port 9000)

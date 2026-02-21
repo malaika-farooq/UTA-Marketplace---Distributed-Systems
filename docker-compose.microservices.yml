@@ -96,6 +96,24 @@ services:
       - marketplace-network
     restart: unless-stopped
 
+  # Favorites Service (gRPC)
+  favorites:
+    build:
+      context: .
+      dockerfile: services/favorites/Dockerfile
+    container_name: uta-marketplace-favorites
+    environment:
+      GRPC_PORT: "50057"
+      DATABASE_URL: "postgres://uta:uta@postgres:5432/uta_marketplace"
+    ports:
+      - "50057:50057"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketplace-network
+    restart: unless-stopped
+
   # Messaging Service (gRPC)
   messaging:
     build:
@@ -147,6 +165,7 @@ services:
       USER_GRPC_ADDR: "user:50054"
       MESSAGING_GRPC_ADDR: "messaging:50055"
       ANALYTICS_GRPC_ADDR: "analytics:50056"
+      FAVORITES_GRPC_ADDR: "favorites:50057"
     ports:
       - "8080:8080"
     depends_on:
@@ -156,6 +175,7 @@ services:
       - user
       - messaging
       - analytics
+      - favorites
     networks:
       - marketplace-network
     restart: unless-stopped

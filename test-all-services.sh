@@ -54,11 +54,11 @@ else
   echo -e "${RED}✗ User Service: Profile failed${NC}"
 fi
 
-FAVORITES=$(curl -s $BASE_URL/api/user/favorites -H "Authorization: Bearer $TOKEN")
+FAVORITES=$(curl -s $BASE_URL/api/favorites -H "Authorization: Bearer $TOKEN")
 if echo "$FAVORITES" | grep -q "favorites"; then
-  echo -e "${GREEN}✓ User Service: Favorites endpoint working${NC}"
+  echo -e "${GREEN}✓ Favorites Service: Favorites endpoint working${NC}"
 else
-  echo -e "${RED}✗ User Service: Favorites failed${NC}"
+  echo -e "${RED}✗ Favorites Service: Favorites failed${NC}"
 fi
 echo ""
 

@@ -34,6 +34,9 @@ message ContactInfo {
   string whatsapp = 3;
   bool email_available = 4;
   bool whatsapp_available = 5;
+  string phone = 6;
+  bool phone_available = 7;
+  string full_name = 8;
 }
 
 message GetContactInfoResponse {

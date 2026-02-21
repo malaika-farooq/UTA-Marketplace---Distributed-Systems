@@ -92,7 +92,7 @@ export const MessagingServiceHandlers = {
 
     try {
       const result = await pool.query(
-        'SELECT email, whatsapp FROM users WHERE id = $1',
+        'SELECT full_name, email, phone, whatsapp FROM users WHERE id = $1',
         [seller_id]
       );
 
@@ -111,9 +111,12 @@ export const MessagingServiceHandlers = {
         message: 'Contact information retrieved',
         contact_info: {
           seller_id,
+          full_name: seller.full_name || '',
           email: seller.email || '',
+          phone: seller.phone || '',
           whatsapp: seller.whatsapp || '',
           email_available: !!seller.email,
+          phone_available: !!seller.phone,
           whatsapp_available: !!seller.whatsapp,
         },
       });
@@ -131,7 +134,7 @@ export const MessagingServiceHandlers = {
 
     try {
       await pool.query(
-        `INSERT INTO contact_attempts (id, user_id, listing_id, seller_id, contact_method, created_at)
+        `INSERT INTO contact_attempts (id, user_id, listing_id, seller_id, contact_method, timestamp)
          VALUES ($1, $2, $3, $4, $5, to_timestamp($6))`,
         [uuidv4(), user_id, listing_id, seller_id, contact_method, timestamp]
       );
@@ -164,21 +167,21 @@ export const MessagingServiceHandlers = {
       const result = await pool.query(
         `SELECT ca.listing_id, l.title as listing_title, ca.seller_id,
                 ca.contact_method,
-                EXTRACT(EPOCH FROM ca.created_at)::bigint as timestamp
+                EXTRACT(EPOCH FROM ca.timestamp)::bigint as contacted_at
          FROM contact_attempts ca
          LEFT JOIN listings l ON ca.listing_id = l.id
          WHERE ca.user_id = $1
-         ORDER BY ca.created_at DESC
+         ORDER BY ca.timestamp DESC
          LIMIT $2 OFFSET $3`,
         [user_id, limit || 20, offset || 0]
       );
 
-      const attempts = result.rows.map((row) => ({
+      const attempts = result.rows.map((row: any) => ({
         listing_id: row.listing_id,
         listing_title: row.listing_title || 'Unknown',
         seller_id: row.seller_id,
         contact_method: row.contact_method,
-        timestamp: row.timestamp,
+        timestamp: row.contacted_at,
       }));
 
       callback(null, {
