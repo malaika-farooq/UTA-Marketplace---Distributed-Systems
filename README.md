@@ -235,8 +235,8 @@ This is a course project. Contributions are not accepted.
 
 | Team Member | Responsibilities |
 | --- | --- |
-| **Yuanbin Man** | Architecture & Implementation, Database & Testing |
-| **Malaika Farooq** | Architecture & Implementation, Frontend & Documentation |
+| **Yuanbin Man** | Architecture, Frontend, Backend
+| **Malaika Farooq** | Architecture, Frontend, Testing, Slides & Documentation 
 
 ---
 
