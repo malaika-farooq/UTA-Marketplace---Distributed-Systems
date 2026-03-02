@@ -377,8 +377,8 @@ kill -9 <PID>    # Kill the process
 
 | Team Member | Responsibilities |
 | --- | --- |
-| **Yuanbin Man** | Architecture & Backend (100%) & Frontend (80%), Database & Testing (80%) & Documentation |
-| **Malaika Farooq** | Testing, Frontend (20%) & Documentation |
+| **Yuanbin Man** | Architecture, Frontend, Backend
+| **Malaika Farooq** | Architecture, Frontend, Testing, Slides & Documentation 
 
 ---
 
